@@ -99,4 +99,9 @@ digitalWrite(ServoRelay,HIGH);
 
      
 }
-       
+   void settingsPush(void *ptr) {
+    
+   // TRD1.setText("Refill");
+    
+    
+    }    

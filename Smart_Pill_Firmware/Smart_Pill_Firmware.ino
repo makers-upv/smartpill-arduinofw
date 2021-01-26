@@ -41,8 +41,14 @@ NexButton RD2 = NexButton(3,2,"b1");                       //Button to confirm p
 NexButton RD3 = NexButton(3,3,"b2");                       //Button to confirm pill dispense
 NexButton RD4 = NexButton(3,4,"b3");                       //Button to confirm pill dispense
 NexButton extitR = NexButton(5,1,"b0");                       //Button to confirm pill dispense
+NexButton settings = NexButton(0,13,"b0");                       //Button to confirm pill dispense
 
 NexText t0 = NexText(0, 16, "t0");                            //Text to store the  date
+NexText TRD1 = NexText(3, 6, "t1");
+NexText TRD2 = NexText(3, 7, "t2");
+NexText TRD3 = NexText(3, 8, "t3");
+NexText TRD4 = NexText(3, 9, "t4");
+
 
 NexNumber  DecenaH = NexNumber (0, 11, "n0");                  //Some numerical variables in order
 NexNumber  UnidadH= NexNumber (0, 12, "n1");                   //to display a clock
@@ -69,6 +75,11 @@ NexTouch *nex_listen_list[]={                                   //It defines wha
   &RD3,
   &RD4,
   &extitR,
+  &TRD1,
+  &TRD2,
+  &TRD3,
+  &TRD4,
+  &settings,
   NULL
   };
 
@@ -149,7 +160,13 @@ RD1.attachPush(RD1PushCallBack,&RD1);
 RD2.attachPush(RD2PushCallBack,&RD2);                  
 RD3.attachPush(RD3PushCallBack,&RD3);                  
 RD4.attachPush(RD4PushCallBack,&RD4);  
-extitR.attachPush(extitRPushCallBack,&extitR);               
+extitR.attachPush(extitRPushCallBack,&extitR);  
+TRD1.attachPush(RD1PushCallBack,&TRD1);                
+TRD2.attachPush(RD2PushCallBack,&TRD2);                  
+TRD3.attachPush(RD3PushCallBack,&TRD3);                  
+TRD4.attachPush(RD4PushCallBack,&TRD4);  
+settings.attachPush(settingsPush,&settings);
+
 dbSerialPrintln("setup done");
 
  servo.setServoControl(SERVO_PIN);
