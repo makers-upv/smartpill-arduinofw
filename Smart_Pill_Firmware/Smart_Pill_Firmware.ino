@@ -40,6 +40,7 @@ NexButton RD1 = NexButton(3,1,"b0");                       //Button to confirm p
 NexButton RD2 = NexButton(3,2,"b1");                       //Button to confirm pill dispense
 NexButton RD3 = NexButton(3,3,"b2");                       //Button to confirm pill dispense
 NexButton RD4 = NexButton(3,4,"b3");                       //Button to confirm pill dispense
+NexButton extitR = NexButton(5,1,"b0");                       //Button to confirm pill dispense
 
 NexText t0 = NexText(0, 16, "t0");                            //Text to store the  date
 
@@ -56,8 +57,9 @@ NexPage page3 = NexPage(3,0 , "page3");
 NexPage page4 = NexPage(4,0 , "page4");
 NexPage page5 = NexPage(5,0 , "page5");
 NexPage page6 = NexPage(6,0 , "page6");
+NexPage page7 = NexPage(7,0 , "page7");
 
-
+NexProgressBar  j0 = NexProgressBar (4, 1, "j0");
 
 
 NexTouch *nex_listen_list[]={                                   //It defines what  objects send a response when touched
@@ -66,6 +68,7 @@ NexTouch *nex_listen_list[]={                                   //It defines wha
   &RD2,
   &RD3,
   &RD4,
+  &extitR,
   NULL
   };
 
@@ -91,7 +94,7 @@ const int UltrasonicPin = 5;
 const int MaxDistance = 200;
 
 const int ServoRelay = 4;
-const int dAngle= 15;
+const int dAngle= 5;
 
 int Dispensador = 0;                                          //A variable in order to change the dispenser used
 int PillSensor; 
@@ -116,18 +119,22 @@ bool VS1 = 0;                                                  //It used to dete
 
 bool State = 0;                                                //Just some states in order to make stuff work.
 bool State2 = 0;
-
+bool State3 = 0;
+bool rep = 0;
+bool Glass = 1;
+bool preGlass = 1;
 NewPing sonar(UltrasonicPin, UltrasonicPin, MaxDistance);
 
 void setup() {
    getRTC();
+  
 
   Serial.begin(9600);
   
   mySerial.begin (9600);
   mp3_set_serial (mySerial);  //set softwareSerial for DFPlayer-mini mp3 module 
   mp3_set_volume (25);
-
+  mp3_stop (); 
   
   pos = SERVOMAX;                                             
   pwm.begin();                                                  //It start an configurate servo stuf, frecuency, etc...
@@ -141,18 +148,18 @@ button.attachPush(buttonPushCallBack,&button);                  //Declare a butt
 RD1.attachPush(RD1PushCallBack,&RD1);                
 RD2.attachPush(RD2PushCallBack,&RD2);                  
 RD3.attachPush(RD3PushCallBack,&RD3);                  
-RD4.attachPush(RD4PushCallBack,&RD4);               
+RD4.attachPush(RD4PushCallBack,&RD4);  
+extitR.attachPush(extitRPushCallBack,&extitR);               
 dbSerialPrintln("setup done");
 
  servo.setServoControl(SERVO_PIN);
- servo.setKp(1.0);
+ servo.setKp(0.5);
     
 pinMode(ServoRelay,OUTPUT);
 digitalWrite(ServoRelay ,LOW);
 
-if(servo.Angle()< restP-dAngle || servo.Angle() > restP+dAngle){
      servo.rotate(restP,1);
-     }
+     
      digitalWrite(ServoRelay,HIGH);
      delay(1000);
 
@@ -169,12 +176,23 @@ void loop() {
   getRTC();
   temp++;
   if(temp == 5)
-  State = HIGH;
+ State = HIGH;
   }}
-  else
-    prePill();           
-  
+  else{
+   if(sonar.ping_cm() <  10)
+   Glass = 1;
+   else
+   Glass = 0;
 
+
+   
+  if(Glass == 1)
+    prePill();           
+    else
+    glass();
+    delay(100);
+  
+  }
 nexLoop(nex_listen_list);
  
 }
