@@ -1,14 +1,15 @@
 void buttonPushCallBack(void *ptr){                          //Function with routines  to execute  when the button is pressed
   //dbSerialPrintln("HOLA MUNDO");
   
-    page0.show();                                             //It shows page 0
+  /*  page0.show();                                             //It shows page 0
     prevUM = -1;
     getRTC();
-
+*/
     rep = 0;
-    State2=LOW;                                               //And basically restart states
-    State=LOW; 
-    
+   // State2=LOW;                                               //And basically restart states
+    //State=LOW; 
+    State = HIGH;
+ 
     
   }                                                           //It should call "Pill()" too, but it's not implementede yet.
 

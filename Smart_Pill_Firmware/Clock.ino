@@ -1,4 +1,5 @@
 void getRTC(){
+    
 int Hour;                                       //Defining some variables in order to make the clock work
 int Mins;
 
@@ -15,10 +16,10 @@ String str6 = "2021";
   Mins = RTclock.minute;
 
   UM = Mins%10;                               //Mechanism in order to refresh only when it's needed
-                                              //Otherwise the screen would start blinking
+                                            //Otherwise the screen would start blinking
   if(UM != prevUM){
 prevUM = UM;
-
+ 
   DecenaH.setValue(Hour/10);                  //In order to express the time in this format --> 01:00
   UnidadH.setValue(Hour%10);                  //It's needed to descompoose number into tens, and unities
                                               //Decena = tens, Unidad = Unities

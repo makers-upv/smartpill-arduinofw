@@ -1,4 +1,5 @@
-
+#include "stdint.h"
+#include "string.h"
 #include <NewPing.h>
 #include <Nextion.h>
 #include <Wire.h>
@@ -8,9 +9,12 @@
 #include <DFPlayer_Mini_Mp3.h>
 #include <FeedBackServo.h>
 
-#define SERVOMIN  70                            // This is the 'minimum' pulse length count (out of 4096)
-#define SERVOMAX  500                           // This is the 'maximum' pulse length count (out of 4096)
+#define SERVOMIN  70                             // This is the 'minimum' pulse length count (out of 4096) 150 defualt 70
+#define SERVOMAX   600                       // This is the 'maximum' pulse length count (out of 4096) 600       500
 #define SERVO_FREQ 50                           // Analog servos run at ~50 Hz updates
+
+//#define USMIN  600 // This is the rounded 'minimum' microsecond length based on the minimum pulse of 150
+//#define USMAX  2400 // This is the rounded 'maximum' microsecond length based on the maximum pulse of 600
 
 #define FEEDBACK_PIN 2
 #define SERVO_PIN 3
@@ -89,10 +93,10 @@ NexTouch *nex_listen_list[]={                                   //It defines wha
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();      //Stuff to operate servos, idk how it works
 
 
-const int SP0 = A0;                                            //Some constants in order to store analog pins
-const int SP1 = A1;                                            //They will be used in Pill tab
-const int SP2 = A2;
-const int SP3 = A3;
+const int SP0 = A1;                                            //Some constants in order to store analog pins
+const int SP1 = A2;                                            //They will be used in Pill tab
+const int SP2 = A3;
+const int SP3 = A0;
 
 const int restP = 310;                                          //Some postions 
 const int D1P = 0;
@@ -106,6 +110,7 @@ const int MaxDistance = 200;
 
 const int ServoRelay = 4;
 const int dAngle= 5;
+
 
 int Dispensador = 0;                                          //A variable in order to change the dispenser used
 int PillSensor; 
@@ -121,10 +126,8 @@ int umbral = 0;                                               //Variable to cali
 int UM = 0;                                                   // This two variables are used to control the amount of times
 int prevUM = -1;                                              //that  is being refreshed the display        
 
-int temp;
+int  trend1;                                                   //It defines the rotation sense of servos 
 
-
-bool trend1;                                                   //It defines the rotation sense of servos 
 bool tamanyo = 0;
 bool VS1 = 0;                                                  //It used to detect pills  --> 0 no pill, 1 pill
 
@@ -141,6 +144,7 @@ void setup() {
   
 
   Serial.begin(9600);
+  Serial3.begin(9600);
   
   mySerial.begin (9600);
   mp3_set_serial (mySerial);  //set softwareSerial for DFPlayer-mini mp3 module 
@@ -153,6 +157,7 @@ void setup() {
   pwm.setPWMFreq(SERVO_FREQ);  // Analog servos run at ~50 Hz updates
   delay(10);
 
+  
 
 nexInit();                                                      //Iniziate nextion display 
 button.attachPush(buttonPushCallBack,&button);                  //Declare a button interrupotion?? IDK
@@ -170,48 +175,36 @@ settings.attachPush(settingsPush,&settings);
 dbSerialPrintln("setup done");
 
  servo.setServoControl(SERVO_PIN);
- servo.setKp(0.5);
+ servo.setKp(0.2);
     
 pinMode(ServoRelay,OUTPUT);
-digitalWrite(ServoRelay ,LOW);
+//digitalWrite(ServoRelay ,LOW);
 
-     servo.rotate(restP,1);
+    //servo.rotate(restP,1);
      
-     digitalWrite(ServoRelay,HIGH);
+    digitalWrite(ServoRelay,HIGH);
      delay(1000);
 
 }
 
 void loop() {
-  
- if (State == LOW){                                           //This if makes able to change between pages
+  if(Serial3.available()> 0){
+  parser();
+  }
+
+    
   unsigned long currentMillis = millis();
 
   if (currentMillis - previousMillis >= interval) {           //Some stuff in order to call getClock every second 
     // save the last time you blinked the LED
     previousMillis = currentMillis;
   getRTC();
-  temp++;
-  if(temp == 5)
- State = HIGH;
-  }}
-  else{
-   if(sonar.ping_cm() <  10)
-   Glass = 1;
-   else
-   Glass = 0;
-
-
-   
-  if(Glass == 1)
-    prePill();           
-    else
-    glass();
-    delay(100);
-  
-  }
-nexLoop(nex_listen_list);
  
+
+  }
+ 
+nexLoop(nex_listen_list);
+ dbSerialPrintln("h");
 }
 
  
