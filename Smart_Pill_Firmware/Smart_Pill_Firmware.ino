@@ -31,7 +31,7 @@ unsigned long previousMillis = 0;                // will store last time "getClo
 
 
 const long interval = 1000;                       
-
+const long intervalAmong = 10000;   
 
 PCD85063TP RTclock;                     //define a object of PCD85063TP class
 
@@ -53,12 +53,18 @@ NexText TRD2 = NexText(3, 7, "t2");
 NexText TRD3 = NexText(3, 8, "t3");
 NexText TRD4 = NexText(3, 9, "t4");
 
+NexText dotsT = NexText(0, 3, "t8");
+NexText dotsH = NexText(0, 4, "t9");
 
-NexNumber  DecenaH = NexNumber (0, 11, "n0");                  //Some numerical variables in order
-NexNumber  UnidadH= NexNumber (0, 12, "n1");                   //to display a clock
-NexNumber  DecenaM = NexNumber (0, 13, "n2");
-NexNumber  UnidadM = NexNumber (0, 14, "n3");
+NexNumber  DecenaH = NexNumber (0, 9, "n0");                  //Some numerical variables in order
+NexNumber  UnidadH = NexNumber (0, 10, "n1");                   //to display a clock
+NexNumber  DecenaM = NexNumber (0, 11, "n2");
+NexNumber  UnidadM = NexNumber (0, 12, "n3");
 
+NexNumber  DecenaTH = NexNumber (0, 14, "n4");                  //Some numerical variables in order
+NexNumber  UnidadTH= NexNumber (0, 15, "n5");                   //to display a clock
+NexNumber  DecenaTM = NexNumber (0, 16, "n6");
+NexNumber  UnidadTM = NexNumber (0, 17, "n7");
   
 NexPage page0 = NexPage(0,0 , "page0");                         
 NexPage page1 = NexPage(1,0 , "page1");
@@ -70,7 +76,7 @@ NexPage page6 = NexPage(6,0 , "page6");
 NexPage page7 = NexPage(7,0 , "page7");
 
 NexProgressBar  j0 = NexProgressBar (4, 1, "j0");
-
+NexProgressBar  progressPill = NexProgressBar (2, 1, "j0");
 
 NexTouch *nex_listen_list[]={                                   //It defines what  objects send a response when touched
   &button,                                                      //Now only the button can be pressed
@@ -111,13 +117,16 @@ const int MaxDistance = 200;
 const int ServoRelay = 4;
 const int dAngle= 5;
 
-
+int counter2 ;
+int i2;
+int progress;
 int Dispensador = 0;                                          //A variable in order to change the dispenser used
 int PillSensor; 
 int n;                                                        //Variable to store n pills
 int pos;                                                      // Variable to store the servo position
 int i = 0;                                                    //Variable to count pills
 
+int temp8h = 480;
           
 int periodo = 10;                                           
 int umbral = 0;                                               //Variable to calibrate each sensor before it uses
@@ -137,6 +146,8 @@ bool State3 = 0;
 bool rep = 0;
 bool Glass = 1;
 bool preGlass = 1;
+bool StateTemp = 0;
+bool flip = 0;
 NewPing sonar(UltrasonicPin, UltrasonicPin, MaxDistance);
 
 void setup() {
@@ -198,9 +209,18 @@ void loop() {
   if (currentMillis - previousMillis >= interval) {           //Some stuff in order to call getClock every second 
     // save the last time you blinked the LED
     previousMillis = currentMillis;
+   
   getRTC();
- 
-
+ if(flip == HIGH){
+    dotsT.setText(" ");
+    dotsH.setText(" ");
+ flip = !flip;
+ }
+ else{
+    dotsT.setText(":");
+    dotsH.setText(":");
+     flip =! flip;
+  }
   }
  
 nexLoop(nex_listen_list);

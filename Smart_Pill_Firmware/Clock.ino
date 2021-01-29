@@ -115,5 +115,19 @@ str3.toCharArray(char_array,str_len);
 
 //With the char, the sentence can be showed in nextion display.
   t0.setText(char_array);
+
+  if(StateTemp == HIGH){
+    temp8h--;
+int hours = temp8h / 60;
+int minutes = temp8h - (hours * 60);
+
+ DecenaTH.setValue(hours/10);                  //In order to express the time in this format --> 01:00
+  UnidadTH.setValue(hours%10);                  //It's needed to descompoose number into tens, and unities
+                                              //Decena = tens, Unidad = Unities
+  DecenaTM.setValue(minutes/10);
+  UnidadTM.setValue(minutes%10);
+
+    
+    }
   }
 }

@@ -59,14 +59,14 @@ void parser(){
    Dispensador = atoi(pills[i].deposit);
 //dbSerialPrintln(i);
  if(n > 0 && Dispensador >= 0){
-       
         while(State == LOW){
+          
           dbSerialPrintln("Bucle");
           nexLoop(nex_listen_list);
            delay(200);
-     int a = sonar.ping_cm();
-  //  dbSerialPrintln(a);
-   if(a <  7)
+    int  a = sonar.ping_cm();
+   dbSerialPrintln(a);
+   if(a <=  6)
    Glass = 1;
    else
    Glass = 0;
@@ -84,15 +84,7 @@ void parser(){
    dbSerialPrintln(i);
   
   }}
-    
+   i2++; 
   }
-
-State2 = LOW;  
-State3 = LOW;
-State = LOW;
-Serial.println("Salí");
-counter = 0;
-
-
-  
+  endPill();
   }

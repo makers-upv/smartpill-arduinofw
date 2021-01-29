@@ -1,6 +1,11 @@
 void pill( int n,  int DN) {
      // dbSerialPrint("DN:");
       //  dbSerialPrintln(DN);
+      if(i2 == 0){
+mp3_set_volume (20);
+    mp3_play (5);
+      }
+counter2++;
 
 i = 0;
 while( i < n ){             //Bucle hasta que dispensemos, n pastillas.
@@ -32,7 +37,7 @@ for(int i=0;i<200;i++){                                       //Toma 200 valores
   umbral = x;
  delayMicroseconds(1);
   }
-  umbral = umbral+ 10;
+  umbral = umbral+ 5;
   
 while(analogRead(PillSensor)< umbral){          //Mientras no detecte ninguna pastilla gira el servo
 
@@ -76,17 +81,10 @@ while(analogRead(PillSensor)< umbral){          //Mientras no detecte ninguna pa
      dbSerialPrint(" ");
      dbSerialPrintln(analogRead(PillSensor));
   pwm.setPWM(Dispensador,0, pos);
-  // pwm.setPWM(Dispensador, 0, pos);                //Mueve el servo a posicion pos
-  // for (uint16_t pulselen = SERVOMIN; pulselen < SERVOMAX; pulselen++) {
-   // pwm.setPWM(Dispensador, 0, pulselen);
- // }
-
- // delay(500);
-  //for (uint16_t pulselen = SERVOMAX; pulselen > SERVOMIN; pulselen--) {
-   // pwm.setPWM(Dispensador, 0, pulselen);
-  //}
+ 
     analogRead(PillSensor);                       //Lee la entrada analógica
   //  dbSerialPrintln(PillSensor);
+  
     }}
 
 while(analogRead(PillSensor) > umbral){
@@ -98,6 +96,8 @@ i++;                                       //Añade una pastilla a la cuenta
 analogRead(PillSensor);                          //Si el valor sigue siendo uno, por que se ha atascado o algo, no entra en el bucle anterior. Además ¿reinicia el valor? IDK pero funciona
 }
 
+progress = map(counter2,0,counter,0,100);
+progressPill.setValue(progress);
 // Serial.println("HIIIIII");               
    i=0;                                   //Reinicia el contador a cero
    for (pos = pos; pos < SERVOMAX-100; pos= pos +10) {
@@ -109,4 +109,36 @@ analogRead(PillSensor);                          //Si el valor sigue siendo uno,
     delay(20);
   }
    } 
+
+
+
+ void endPill(){
+  State2 = LOW;  
+State3 = LOW;
+State = LOW;
+Serial.println("Salí");
+counter = 0;
+counter2 = 0;
+page0.show();
+  mp3_set_volume (25);
+  mp3_play (2);
+while(sonar.ping_cm() < 6 ){
+  prevUM = -1;
+  getRTC();
+  delay(10);
+  nexLoop(nex_listen_list);
+delay(100);
+  }
+  mp3_set_volume (25);
+  Serial3.println("pill 1");
+  mp3_play (3);
+  delay(2500);
+  mp3_play (4);
+  i2 = 0;
+  
+  prevUM = -1;
+  StateTemp = 1;
+  getRTC();
+  
+  }
    
