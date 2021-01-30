@@ -27,7 +27,7 @@ State3 = LOW;
  if (currentMillis - previousMillis >= intervalAmong) {           //Some stuff in order to call getClock every second 
     // save the last time you blinked the LED
     previousMillis = currentMillis;
-  mp3_set_volume (10);
+  mp3_set_volume (20);
  mp3_play (6);
   }
 
@@ -39,7 +39,7 @@ State3 = LOW;
        mp3_set_volume (20);
     mp3_play (1);
         delay(3500);
-        mp3_set_volume (10);
+        mp3_set_volume (20);
  mp3_play (6);
     rep = 1;
     }

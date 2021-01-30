@@ -64,9 +64,9 @@ void parser(){
           dbSerialPrintln("Bucle");
           nexLoop(nex_listen_list);
            delay(200);
-    int  a = sonar.ping_cm();
-   dbSerialPrintln(a);
-   if(a <=  6)
+  //  int  a = sonar.ping_cm();
+  // dbSerialPrintln(a);
+   if(sonar.ping_cm() <=  dGlass)
    Glass = 1;
    else
    Glass = 0;
@@ -80,8 +80,8 @@ void parser(){
   }
   if(State == HIGH){
   pill(n,Dispensador);
-    dbSerialPrintln("Dispenso: ");
-   dbSerialPrintln(i);
+    //dbSerialPrintln("Dispenso: ");
+   //dbSerialPrintln(i);
   
   }}
    i2++; 

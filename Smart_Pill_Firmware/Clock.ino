@@ -91,7 +91,7 @@ switch (RTclock.month) { // It stores the month in strin 5
             break;
     }
 
-    str6 = RTclock.year+2001;     //And finally stores year in other string
+    str6 = RTclock.year+2000;     //And finally stores year in other string
 
     //Now all the strings are added in one string in order to write a "sentence"
     
@@ -126,8 +126,27 @@ int minutes = temp8h - (hours * 60);
                                               //Decena = tens, Unidad = Unities
   DecenaTM.setValue(minutes/10);
   UnidadTM.setValue(minutes%10);
-
+in = 0;
     
     }
+
+    
+   if(in == HIGH ){
+      temp5m--;
+int hours = 0;
+int minutes = temp5m - (hours * 60);
+
+ DecenaTH.setValue(hours);                  //In order to express the time in this format --> 01:00
+  UnidadTH.setValue(hours);                  //It's needed to descompoose number into tens, and unities
+                                              //Decena = tens, Unidad = Unities
+  DecenaTM.setValue(minutes/10);
+  UnidadTM.setValue(minutes%10);
+    if (temp5m == 0){
+    parser(); 
+    in = LOW;
+    
+    }}
+    
+    
   }
 }

@@ -30,14 +30,14 @@ PillSensor = SP3;
 break;
   }
   
-for(int i=0;i<200;i++){                                       //Toma 200 valores del sensor en vacío y hace la media
+for(int i=0;i<400;i++){                                       //Toma 200 valores del sensor en vacío y hace la media
 // dbSerialPrintln(i);
   int x = analogRead(PillSensor);
   if(umbral < x  )                        ///De esta manera calibramos el sensor antes de cada uso.
   umbral = x;
  delayMicroseconds(1);
   }
-  umbral = umbral+ 5;
+  umbral = umbral+5;
   
 while(analogRead(PillSensor)< umbral){          //Mientras no detecte ninguna pastilla gira el servo
 
@@ -46,26 +46,15 @@ while(analogRead(PillSensor)< umbral){          //Mientras no detecte ninguna pa
     if(pos >= SERVOMAX )                     //Cambio de sentido
     trend1 = -1;
     
- /* if(tamanyo == 1){             //Agitar o no en función de la pastilla
-    if(pos <= SERVOMIN + 150 && pos > SERVOMIN && trend1 < 0 ) {                    //Cambio de sentido pos >= SERVOMAX- 100 && pos < SERVOMAX || 
-    periodo = 50;
-     if(pos <= SERVOMIN + 10 && pos > SERVOMIN && trend1 < 0 )
+    analogRead(PillSensor);    
+     if(pos <= SERVOMIN + 100 && pos > SERVOMIN && trend1 < 0 )
      periodo=100;
      else
     periodo = 10;
-  if(pos == SERVOMIN + 200  && trend1 < 0 ) {
-    for(int k= 0; k < 10; k++){
-      for (pos = pos; pos < SERVOMAX-180; pos++) {
-    pwm.setPWM(Dispensador, 0, pos);
-    delay(1);
-  } 
-  for (pos = pos; pos > SERVOMIN+170;pos--) {
-    pwm.setPWM(Dispensador, 0, pos);
-    delay(1);
-  }
-    }}}
+analogRead(PillSensor);    
     
-    }*/
+    
+    
     analogRead(PillSensor);                     //Lee la entrada analógica
     if(pos <= SERVOMIN)                        //Cambio de sentido
     trend1 = 1;
@@ -125,10 +114,21 @@ page0.show();
 while(sonar.ping_cm() < 6 ){
   prevUM = -1;
   getRTC();
+  int cero = 0;
+  DecenaTH.setValue(cero);                  //In order to express the time in this format --> 01:00
+  UnidadTH.setValue(cero);                  //It's needed to descompoose number into tens, and unities
+                                              //Decena = tens, Unidad = Unities
+  DecenaTM.setValue(cero);
+  UnidadTM.setValue(cero);
   delay(10);
   nexLoop(nex_listen_list);
 delay(100);
   }
+  DecenaTH.setValue('0');                  //In order to express the time in this format --> 01:00
+  UnidadTH.setValue('0');                  //It's needed to descompoose number into tens, and unities
+                                              //Decena = tens, Unidad = Unities
+  DecenaTM.setValue('0');
+  UnidadTM.setValue('0');
   mp3_set_volume (25);
   Serial3.println("pill 1");
   mp3_play (3);
@@ -139,6 +139,7 @@ delay(100);
   prevUM = -1;
   StateTemp = 1;
   getRTC();
+  
   
   }
    

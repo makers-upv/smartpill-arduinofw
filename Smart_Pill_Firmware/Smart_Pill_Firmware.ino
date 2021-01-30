@@ -9,7 +9,7 @@
 #include <DFPlayer_Mini_Mp3.h>
 #include <FeedBackServo.h>
 
-#define SERVOMIN  70                             // This is the 'minimum' pulse length count (out of 4096) 150 defualt 70
+#define SERVOMIN  100                             // This is the 'minimum' pulse length count (out of 4096) 150 defualt 70
 #define SERVOMAX   600                       // This is the 'maximum' pulse length count (out of 4096) 600       500
 #define SERVO_FREQ 50                           // Analog servos run at ~50 Hz updates
 
@@ -52,6 +52,8 @@ NexText TRD1 = NexText(3, 6, "t1");
 NexText TRD2 = NexText(3, 7, "t2");
 NexText TRD3 = NexText(3, 8, "t3");
 NexText TRD4 = NexText(3, 9, "t4");
+
+NexText nDisp = NexText(5, 2, "t6");
 
 NexText dotsT = NexText(0, 3, "t8");
 NexText dotsH = NexText(0, 4, "t9");
@@ -104,14 +106,15 @@ const int SP1 = A2;                                            //They will be us
 const int SP2 = A3;
 const int SP3 = A0;
 
-const int restP = 310;                                          //Some postions 
+const int restP = 310;                                          //Some postions for servos
 const int D1P = 0;
-const int D2P = 90;
+const int D2P = 100;
 const int D3P = 180;
 const int D4P = 270;
 
- 
-const int UltrasonicPin = 5;
+int dGlass = 5;                                                 //Distance 
+
+const int UltrasonicPin = 5;  
 const int MaxDistance = 200;
 
 const int ServoRelay = 4;
@@ -126,8 +129,11 @@ int n;                                                        //Variable to stor
 int pos;                                                      // Variable to store the servo position
 int i = 0;                                                    //Variable to count pills
 
-int temp8h = 480;
-          
+
+int temp8h = 480;                                             //stroring time (8h)
+ 
+int temp5m = 3;
+         
 int periodo = 10;                                           
 int umbral = 0;                                               //Variable to calibrate each sensor before it uses
 
@@ -148,6 +154,7 @@ bool Glass = 1;
 bool preGlass = 1;
 bool StateTemp = 0;
 bool flip = 0;
+bool in = 0;
 NewPing sonar(UltrasonicPin, UltrasonicPin, MaxDistance);
 
 void setup() {
@@ -181,17 +188,16 @@ TRD1.attachPush(RD1PushCallBack,&TRD1);
 TRD2.attachPush(RD2PushCallBack,&TRD2);                  
 TRD3.attachPush(RD3PushCallBack,&TRD3);                  
 TRD4.attachPush(RD4PushCallBack,&TRD4);  
-settings.attachPush(settingsPush,&settings);
 
 dbSerialPrintln("setup done");
 
  servo.setServoControl(SERVO_PIN);
- servo.setKp(0.2);
+ servo.setKp(1);
     
 pinMode(ServoRelay,OUTPUT);
-//digitalWrite(ServoRelay ,LOW);
+digitalWrite(ServoRelay ,LOW);
 
-    //servo.rotate(restP,1);
+    servo.rotate(restP,4);
      
     digitalWrite(ServoRelay,HIGH);
      delay(1000);
@@ -200,6 +206,10 @@ pinMode(ServoRelay,OUTPUT);
 
 void loop() {
   if(Serial3.available()> 0){
+ if(StateTemp == LOW){
+  in = 1;
+ StateTemp == HIGH;
+  }else
   parser();
   }
 
@@ -224,7 +234,7 @@ void loop() {
   }
  
 nexLoop(nex_listen_list);
- dbSerialPrintln("h");
+ //dbSerialPrintln("h");
 }
 
  

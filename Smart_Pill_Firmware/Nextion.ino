@@ -32,6 +32,7 @@ for(int k=60;k < 100;k=k+2 ){
     delay(1);
 }
       page5.show();
+       nDisp.setText("1");
  }      
 
 void RD2PushCallBack(void *ptr){                          //Function with routines  to execute  when the button is pressed
@@ -49,6 +50,7 @@ void RD2PushCallBack(void *ptr){                          //Function with routin
     }
 digitalWrite(ServoRelay,HIGH);
     page5.show();
+    nDisp.setText("2");
   }
 
   void RD3PushCallBack(void *ptr){                          //Function with routines  to execute  when the button is pressed
@@ -64,9 +66,11 @@ digitalWrite(ServoRelay,HIGH);
     int j = map(k-D3P,0,distance,100,0);
     j0.setValue(j);
     
+    
     }
 digitalWrite(ServoRelay,HIGH);
     page5.show();
+    nDisp.setText("3");
   }       
 
   void RD4PushCallBack(void *ptr){                          //Function with routines  to execute  when the button is pressed
@@ -84,6 +88,7 @@ digitalWrite(ServoRelay,HIGH);
     }
 digitalWrite(ServoRelay,HIGH);
     page5.show();
+    nDisp.setText("4");
   }
 
  void extitRPushCallBack(void *ptr){                          //Function with routines  to execute  when the button is pressed
@@ -100,9 +105,4 @@ digitalWrite(ServoRelay,HIGH);
 
      
 }
-   void settingsPush(void *ptr) {
-    
-   // TRD1.setText("Refill");
-    
-    
-    }    
+ 
