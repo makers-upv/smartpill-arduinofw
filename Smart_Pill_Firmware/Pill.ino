@@ -38,40 +38,40 @@ for(int i=0;i<400;i++){                                       //Toma 200 valores
  delayMicroseconds(1);
   }
   umbral = umbral+5;
-  
-while(analogRead(PillSensor)< umbral){          //Mientras no detecte ninguna pastilla gira el servo
+  int sensor = 0;
+while(sensor < umbral){          //Mientras no detecte ninguna pastilla gira el servo
 
 
-    analogRead(PillSensor);                    //Lee la entrada analógica
+   sensor = analogRead(PillSensor);                    //Lee la entrada analógica
     if(pos >= SERVOMAX )                     //Cambio de sentido
     trend1 = -1;
     
-    analogRead(PillSensor);    
+   sensor = analogRead(PillSensor);    
      if(pos <= SERVOMIN + 100 && pos > SERVOMIN && trend1 < 0 )
      periodo=100;
      else
     periodo = 10;
-analogRead(PillSensor);    
+sensor = analogRead(PillSensor);  
     
     
     
-    analogRead(PillSensor);                     //Lee la entrada analógica
+    sensor = analogRead(PillSensor);                    //Lee la entrada analógica
     if(pos <= SERVOMIN)                        //Cambio de sentido
     trend1 = 1;
    // dbSerialPrintln(trend1);
-    analogRead(PillSensor);                      //Lee la entrada analógica
+sensor = analogRead(PillSensor);                   //Lee la entrada analógica
     
     if(millis()-tiempoAnterior>=periodo){  //si ha transcurrido el periodo programado
     pos = pos + trend1;                           //No se como explicarlo pero se entiende
     tiempoAnterior=millis();                        //guarda el tiempo actual como referencia
    
-     analogRead(PillSensor);                       //Lee la entrada analógica
+   sensor = analogRead(PillSensor);                       //Lee la entrada analógica
      dbSerialPrint(umbral);
      dbSerialPrint(" ");
      dbSerialPrintln(analogRead(PillSensor));
   pwm.setPWM(Dispensador,0, pos);
  
-    analogRead(PillSensor);                       //Lee la entrada analógica
+   sensor = analogRead(PillSensor);                       //Lee la entrada analógica
   //  dbSerialPrintln(PillSensor);
   
     }}
@@ -81,8 +81,8 @@ while(analogRead(PillSensor) > umbral){
   }
 i++;                                       //Añade una pastilla a la cuenta
    // dbSerialPrintln(i);
-
-analogRead(PillSensor);                          //Si el valor sigue siendo uno, por que se ha atascado o algo, no entra en el bucle anterior. Además ¿reinicia el valor? IDK pero funciona
+   
+sensor = analogRead(PillSensor);                        //Si el valor sigue siendo uno, por que se ha atascado o algo, no entra en el bucle anterior. Además ¿reinicia el valor? IDK pero funciona
 }
 
 progress = map(counter2,0,counter,0,100);
